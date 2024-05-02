@@ -9,34 +9,75 @@
  * 
 */
 
-void rotate_right(u8 MK[16]) {
-    uint8_t temp[16]; // Temporary array to store the rotated MK
+void rotate_right_128(u8* key, u8 bits) {
+    u8 temp[KEY_SIZE];
+    int byte_shift = bits / 8;
+    int bit_shift = bits % 8;
 
-    // Number of byte shifts and bit shifts
-    int byte_shift = 61 / 8; // 61 bits / 8 bits per byte = 7 bytes
-    int bit_shift = 61 % 8;  // Remaining bits = 5 bits
+    for (int i = 0; i < KEY_SIZE; ++i) {
+        int source_index = (i + byte_shift) % KEY_SIZE;
+        int source_next_index = (source_index + 1) % KEY_SIZE;
+        temp[i] = (key[source_index] >> bit_shift) | (key[source_next_index] << (8 - bit_shift));
+    }
+    memcpy(key, temp, KEY_SIZE);
+}
 
-    for (int i = 0; i < 16; ++i) {
-        // Circular byte shift + handling bit shifts across byte boundaries
-        temp[i] = (MK[(i + byte_shift) % 16] >> bit_shift) | 
-                  (MK[(i + byte_shift + 1) % 16] << (8 - bit_shift));
+void key_schedule(u8* master_key, u8 round_keys[NUM_ROUNDS][ROUND_KEY_SIZE]) {
+    u8 key[KEY_SIZE];
+    memcpy(key, master_key, KEY_SIZE);
+
+    for (int i = 0; i < NUM_ROUNDS; ++i) {
+        memcpy(round_keys[i], key, ROUND_KEY_SIZE);  // Copy the first 8 bytes for the round key
+        rotate_right_128(key, 61);  // Rotate the whole 128-bit key 61 bits to the right
+    }
+}
+
+
+void encrypt(u8* plaintext, u8* ciphertext, u8 round_keys[NUM_ROUNDS][ROUND_KEY_SIZE]) {
+    u8 state[BLOCK_SIZE];
+    memcpy(state, plaintext, BLOCK_SIZE);
+
+    for (int i = 0; i < NUM_ROUNDS; ++i) {
+        for (int j = 0; j < BLOCK_SIZE; ++j) {
+            state[j] ^= round_keys[i][j % ROUND_KEY_SIZE];  // XOR state with round key
+        }
+        // Additional round operations (e.g., substitutions, permutations) go here
     }
 
-    memcpy(MK, temp, 16); // Copy the rotated bytes back to the original MK array
+    memcpy(ciphertext, state, BLOCK_SIZE);
 }
 
-void key_expansion(u8* MK, u8* RK) {
-    // Key expansion logic here
+void decrypt(u8* ciphertext, u8* plaintext, u8 round_keys[NUM_ROUNDS][ROUND_KEY_SIZE]) {
+    u8 state[BLOCK_SIZE];
+    memcpy(state, ciphertext, BLOCK_SIZE);
+
+    for (int i = NUM_ROUNDS - 1; i >= 0; --i) {
+        // Reverse round operations before applying the round key
+        for (int j = 0; j < BLOCK_SIZE; ++j) {
+            state[j] ^= round_keys[i][j % ROUND_KEY_SIZE];  // XOR state with round key
+        }
+    }
+
+    memcpy(plaintext, state, BLOCK_SIZE);
 }
 
-void round_function(blk* block, u8* RK) {
-    // Apply S-box, P-box, and round key mixing
-}
 
-void encrypt(blk* PT, blk* CT, u8* RK) {
-    // Encryption logic
-}
+// void rotate_right(u8 MK[16]) {
+    
+// }
 
-void decrypt(blk* CT, blk* PT, u8* RK) {
-    // Decryption logic
-}
+// void key_expansion(u8* MK, u8* RK) {
+//     // Key expansion logic here
+// }
+
+// void round_function(blk* block, u8* RK) {
+//     // Apply S-box, P-box, and round key mixing
+// }
+
+// void encrypt(blk* PT, blk* CT, u8* RK) {
+//     // Encryption logic
+// }
+
+// void decrypt(blk* CT, blk* PT, u8* RK) {
+//     // Decryption logic
+// }

@@ -15,13 +15,18 @@ static const u8 PERMBITS32[32] = {
 	0x11U, 0x0CU, 0x16U, 0x03U, 0x10U, 0x1EU, 0x0AU, 0x1BU
 };
 
-void rotate_right(u8 MK[16]);
+void rotate_right_128(u8* key, u8 bits);
+void key_schedule(u8* master_key, u8 round_keys[NUM_ROUNDS][ROUND_KEY_SIZE]);
+void encrypt(u8* plaintext, u8* ciphertext, u8 round_keys[NUM_ROUNDS][ROUND_KEY_SIZE]);
+void decrypt(u8* ciphertext, u8* plaintext, u8 round_keys[NUM_ROUNDS][ROUND_KEY_SIZE]);
 
-void key_expansion(u8* MK, u8* RK);
-void round_function(blk* block, u8* RK);
+// void rotate_right(u8 MK[16]);
 
-void encrypt(blk* PT, blk* CT, u8* RK);
-void decrypt(blk* CT, blk* PT, u8* RK);
+// void key_expansion(u8* MK, u8* RK);
+// void round_function(blk* block, u8* RK);
+
+// void encrypt(blk* PT, blk* CT, u8* RK);
+// void decrypt(blk* CT, blk* PT, u8* RK);
 
 // void encKeySchedule(u8 enc_WK[8], u8 enc_SK[128], const u8 MK[16]);
 // void decKeySchedule(u8 dec_WK[8], u8 dec_SK[128], const u8 MK[16]);

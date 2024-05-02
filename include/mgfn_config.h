@@ -15,11 +15,10 @@
 #ifndef _MGFN_CONFIG_H
 #define _MGFN_CONFIG_H
 
-#define NUM_ROUNDS 24
-#define BLOCK_SIZE 64                   // Block size in bits
-#define KEY_SIZE 128                    // Key size in bits
-#define SUBKEY_SIZE 64                  // Subkey size in bits
-#define NUM_SUBKEYS (NUM_ROUNDS + 2)    // Number of subkeys needed
+#define BLOCK_SIZE 8    // Block size in bytes
+#define KEY_SIZE 16     // Key size in bytes
+#define NUM_ROUNDS 24   // Number of rounds
+#define ROUND_KEY_SIZE 8 // Round key size in bytes
 
 typedef int8_t      i8;
 typedef int32_t     i32;
