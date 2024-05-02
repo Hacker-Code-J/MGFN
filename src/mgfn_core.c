@@ -24,3 +24,19 @@ void rotate_right(u8 MK[16]) {
 
     memcpy(MK, temp, 16); // Copy the rotated bytes back to the original MK array
 }
+
+void key_expansion(u8* MK, u8* RK) {
+    // Key expansion logic here
+}
+
+void round_function(blk* block, u8* RK) {
+    // Apply S-box, P-box, and round key mixing
+}
+
+void encrypt(blk* PT, blk* CT, u8* RK) {
+    // Encryption logic
+}
+
+void decrypt(blk* CT, blk* PT, u8* RK) {
+    // Decryption logic
+}

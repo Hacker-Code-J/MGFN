@@ -17,28 +17,34 @@ static const u8 PERMBITS32[32] = {
 
 void rotate_right(u8 MK[16]);
 
-void encKeySchedule(u8 enc_WK[8], u8 enc_SK[128], const u8 MK[16]);
-void decKeySchedule(u8 dec_WK[8], u8 dec_SK[128], const u8 MK[16]);
+void key_expansion(u8* MK, u8* RK);
+void round_function(blk* block, u8* RK);
 
-// static inline u8 ROTL(u8 byte, u8 shift) {
-//     return (byte << shift) | (byte >> (8 - shift));
+void encrypt(blk* PT, blk* CT, u8* RK);
+void decrypt(blk* CT, blk* PT, u8* RK);
+
+// void encKeySchedule(u8 enc_WK[8], u8 enc_SK[128], const u8 MK[16]);
+// void decKeySchedule(u8 dec_WK[8], u8 dec_SK[128], const u8 MK[16]);
+
+// // static inline u8 ROTL(u8 byte, u8 shift) {
+// //     return (byte << shift) | (byte >> (8 - shift));
+// // }
+
+// static inline u8 F0(u8 byte) {
+//     // ROTL(byte, 1) ^ ROTL(byte, 2) ^ ROTL(byte, 7);
+//     return ((byte << 1) | (byte >> 7)) ^
+//            ((byte << 2) | (byte >> 6)) ^
+//            ((byte << 7) | (byte >> 1));
 // }
 
-static inline u8 F0(u8 byte) {
-    // ROTL(byte, 1) ^ ROTL(byte, 2) ^ ROTL(byte, 7);
-    return ((byte << 1) | (byte >> 7)) ^
-           ((byte << 2) | (byte >> 6)) ^
-           ((byte << 7) | (byte >> 1));
-}
+// static inline u8 F1(u8 byte) {
+//     // return ROTL(byte, 3) ^ ROTL(byte, 4) ^ ROTL(byte, 6);
+//     return ((byte << 3) | (byte >> 5)) ^
+//            ((byte << 4) | (byte >> 4)) ^
+//            ((byte << 6) | (byte >> 2));
+// }
 
-static inline u8 F1(u8 byte) {
-    // return ROTL(byte, 3) ^ ROTL(byte, 4) ^ ROTL(byte, 6);
-    return ((byte << 3) | (byte >> 5)) ^
-           ((byte << 4) | (byte >> 4)) ^
-           ((byte << 6) | (byte >> 2));
-}
-
-void MGFN_Encrypt(u8 dst[8], const u8 src[8], const u8 MK[16]);
-void MGFN_Decrypt(u8 dst[8], const u8 src[8], const u8 MK[16]);
+// void MGFN_Encrypt(u8 dst[8], const u8 src[8], const u8 MK[16]);
+// void MGFN_Decrypt(u8 dst[8], const u8 src[8], const u8 MK[16]);
 
 #endif /* _MGFN_H */
