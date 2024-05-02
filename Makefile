@@ -7,7 +7,8 @@ SRCDIR=./src
 TESTDIR=./tests
 INCDIR=./include
 
-OBJS=$(OBJDIR)/mgfn_core.o $(OBJDIR)/main.o
+OBJS=$(OBJDIR)/mgfn_core.o $(OBJDIR)/mgfn_key.o $(OBJDIR)/mgfn_utils.o \
+	$(OBJDIR)/main.o
 
 TARGET=$(BINDIR)/a.out
 

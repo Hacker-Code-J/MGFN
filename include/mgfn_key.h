@@ -1,0 +1,10 @@
+#include "mgfn_config.h"
+#include "mgfn_utils.h"
+
+static const u8 mgfn_rCon[14] = {
+    0x1U, 0x2U, 0x3U, 0x4U, 0x5U, 0x6U, 0x7U, 0x8U,
+    0x9U, 0xAU, 0xBU, 0xCU, 0xDU, 0xEU
+};
+
+void mgfn_getRoundKey(u8* r_key, u8* m_key);
+void mgfn_updateMasterKey(u8* m_key, u8 round_i);
