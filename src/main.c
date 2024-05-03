@@ -7,11 +7,11 @@ int main(void) {
         0xF0, 0xE1, 0xD2, 0xC3, 0xB4, 0xA5, 0x96, 0x87,
         0x78, 0x69, 0x5A, 0x4B, 0x3C, 0x2D, 0x1E, 0x0F
     };
-    printByteData(m_key, KEY_SIZE);
+    // printByteData(m_key, KEY_SIZE);
 
-    u8 r_keys[BLOCK_SIZE];
-    mgfn_getRoundKey(r_keys, m_key);
-    printByteData(r_keys, BLOCK_SIZE);
+    // u8 r_keys[BLOCK_SIZE];
+    // mgfn_getRoundKey(r_keys, m_key);
+    // printByteData(r_keys, BLOCK_SIZE);
 
     u8 pt[BLOCK_SIZE] = {
         0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07
