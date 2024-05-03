@@ -77,6 +77,7 @@ void mgfn_getRoundKey(u8* r_key, u8* m_key) {
         r_key[i] |= bit[64 + ((i + 1) * 8 - 1)] ? (1 << 7) : 0;
     }
 }
+
 void mgfn_updateMasterKey(u8* m_key, u8 round_i) {
     bool bit[128] = { 0, };
 

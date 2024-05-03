@@ -48,6 +48,24 @@ void wordToByte(u8* dst, const u32* src, const size_t wordLen) {
     }
 }
 
+// Function to convert u16 array to u8 array
+// h1|h0 <=> half[2] = { h0, h1 }
+// -> byte[0] = (h0 >> 0x00) & 0xFF = b0
+// -> byte[1] = (h0 >> 0x08) & 0xFF = b1
+// -> byte[2] = (h1 >> 0x00) & 0xFF = b2
+// -> byte[3] = (h1 >> 0x08) & 0xFF = b3
+// h3|h2|h1|h0 <=> b7:b6|b5:b4|b3:b2|b1:b0
+// h0 -> b1:b0
+// h1 -> b3:b2
+// h2 -> b5:b4
+// h3 -> b7:b6
+void halfWordToByte(u8* dst, const u16* src, const size_t halfWordLen) {
+    for (size_t i = 0; i < halfWordLen; i++) {
+        dst[2 * i + 0] = (u8)((src[i]        ) & 0xFF);
+        dst[2 * i + 1] = (u8)((src[i] >> 0x08) & 0xFF);
+    }
+}
+
 void printByteData(u8* data, size_t byteLen) {
     for (i32 i = byteLen - 1; i >=0; i--) {
         printf("%02x:", data[i]);
